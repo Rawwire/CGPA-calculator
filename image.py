@@ -4,9 +4,7 @@ from PIL import Image
 import cv2
 import numpy as np
 
-# Configure Tesseract path
-tess_exe_path = os.path.join(os.getcwd(), 'tess', 'tesseract.exe')
-tess.pytesseract.tesseract_cmd = tess_exe_path
+tess.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 def img(uploaded_file):
 
