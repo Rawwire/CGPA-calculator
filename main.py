@@ -5,7 +5,7 @@ from image import img
 
 st.set_page_config(page_title="Snap Grade", page_icon="star", layout="wide")
 
-# Hide the default Streamlit UI elements
+
 hide_st_style = """
 <style>
 #MainMenu {visibility: hidden;}
@@ -15,24 +15,24 @@ header {visibility: hidden;}
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
 
-# Sidebar menu
+
 with st.sidebar:
     selectedmain = option_menu(
         menu_title="Main Menu",
         options=["Home", "Contact Us"]
     )
 
-# Function to display centered title
+
 def display_centered_title(text, level=1, font_size=38):
     style = f"text-align: center; font-size: {font_size}px; border-radius: 5px;"
     st.markdown(f"<h{level} style='{style}'>{text}</h{level}>", unsafe_allow_html=True)
 
-# Function to display centered description
+
 def display_centered_des(text, level=1, font_size=20):
     style = f"text-align: center; font-size: {font_size}px; border-radius: 5px;"
     st.markdown(f"<h{level} style='{style}'>{text}</h{level}>", unsafe_allow_html=True)
 
-# Home page
+
 if selectedmain == "Home":
     display_centered_title("SNAPGRADE", level=2, font_size=48)
     st.write(" ")
@@ -42,7 +42,7 @@ if selectedmain == "Home":
     display_centered_des(description, level=2, font_size=16)
     st.write(" ")
 
-    # Horizontal menu for GPA, CGPA, and Upload Marksheet
+
     selected = option_menu(
         menu_title="Choose the following to be calculated",
         options=["GPA", "CGPA", "Upload Marksheet"],
@@ -51,7 +51,7 @@ if selectedmain == "Home":
         orientation="horizontal"
     )
 
-    # GPA calculation
+
     if selected == "GPA":
         n = st.number_input("Choose the number of Subjects:", min_value=1, step=1)
         st.header("Choose the Credits and Grade for the Subjects")
@@ -91,49 +91,79 @@ if selectedmain == "Home":
         if st.button("Calculate"):
             st.success(f"CGPA is {cgpa:.2f}")
 
-    # Marksheet upload and processing
+
+    if "grades" not in st.session_state:
+        st.session_state.grades = []
+    if "credits" not in st.session_state:
+        st.session_state.credits = []
+
+    def add_subject():
+        st.session_state.grades.append(5) 
+        st.session_state.credits.append(0)  
+
+    def remove_subject(index):
+        del st.session_state.grades[index]
+        del st.session_state.credits[index]
     if selected == "Upload Marksheet":
+
+        st.write("⚠️ If you want to calculate multiple marksheets, kindly refresh the page every time!!")
         uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
+        
         if uploaded_file is not None:
             image = Image.open(uploaded_file)
             st.image(image, caption=uploaded_file.name, use_column_width=True)
+            
             try:
-                result = img(uploaded_file)
-                cgpam=[]
-                gpa1=0
-                cred=[]
-                for k in result[1]:
-                    cred.append(int(k))
-                for i in result[0]:
-                    if "O" in i:
-                        cgpam.append(10)
-                    elif i == "A+":
-                        cgpam.append(9)
-                    elif "A" in i:
-                        cgpam.append(8)
-                    elif "B+" in i:
-                        cgpam.append(7)
-                    elif "B" in i:
-                        cgpam.append(6)
-                    elif "C" in i:
-                        cgpam.append(5)
-                    else:
-                        st.warning("Unable to process the Image")
-                st.write("Grades:",cgpam)
-                st.write("Credits:",result[0])
+                result = img(uploaded_file)  
+
+                if not st.session_state.grades and not st.session_state.credits:
+                    for k in result[1]:
+                        st.session_state.credits.append(int(k))
+                    
+                    for i in result[0]:
+                        if "O" in i:
+                            st.session_state.grades.append(10)
+                        elif i == "A+":
+                            st.session_state.grades.append(9)
+                        elif "A" in i:
+                            st.session_state.grades.append(8)
+                        elif "B+" in i:
+                            st.session_state.grades.append(7)
+                        elif "B" in i:
+                            st.session_state.grades.append(6)
+                        elif "C" in i:
+                            st.session_state.grades.append(5)
+                        else:
+                            st.warning("Unable to process the Image")
+                            break
+
+                st.button("Add Subject", on_click=add_subject)
+
+                st.write("### Check, Modify, Add, or Remove Grades and Credits")
+                for i in range(len(st.session_state.grades)):
+                    cols = st.columns(3)
+                    st.session_state.grades[i] = cols[0].selectbox(f"Grade for Subject {i+1}", [5, 6, 7, 8, 9, 10], index=st.session_state.grades[i] - 5)
+                    st.session_state.credits[i] = cols[1].number_input(f"Credits for Subject {i+1}", value=st.session_state.credits[i], min_value=0, max_value=10)
+                    
+                    cols[2].write(" ")
+                    cols[2].write(" ")
+                    cols[2].button("Remove", key=f"remove_{i}", on_click=remove_subject, args=(i,))
+
                 if st.button("Calculate"):
-                    for j in range(len(cgpam)):
-                        gpa1 += int(cgpam[j]) * int(cred[j])
-                    gpa1 /= sum(cred)
-                    st.success(f"GPA is {gpa1:.2f}")
+                    if st.session_state.credits: 
+                        gpa1 = sum(g * c for g, c in zip(st.session_state.grades, st.session_state.credits)) / sum(st.session_state.credits)
+                        st.success(f"GPA is {gpa1:.2f}")
+                    else:
+                        st.warning("No subjects left to calculate GPA.")
             except Exception as e:
                 st.error(f"Error processing the image: {e}")
+
 
 # Contact Us page
 if selectedmain == "Contact Us":
     display_centered_title("About Us", level=2, font_size=48)
     description = """
-    This CGPA/GPA Calculator for Anna University (R-2021) is a project created by Raja Pandi S and Priyadharshini.
+    This CGPA/GPA Calculator for Anna University (R-2021) is a project created by Raja Pandi and Priyadharshini.
     """
     display_centered_des(description, level=2, font_size=16)
 
