@@ -4,11 +4,7 @@ from PIL import Image
 import cv2
 import numpy as np
 
-if os.name == 'nt':  # Windows
-    tess_exe_path = os.path.join(os.getcwd(), 'tess', 'tesseract.exe')
-else:  # Linux or other OS
-    tess_exe_path = '/usr/bin/tesseract'
-
+tess_exe_path = "/path/to/tesseract.exe"  # Replace with the actual path
 tess.pytesseract.tesseract_cmd = tess_exe_path
 
 def img(uploaded_file):
