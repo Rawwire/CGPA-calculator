@@ -5,7 +5,8 @@ import cv2
 import numpy as np
 
 # Configure Tesseract path
-#tess.pytesseract.tesseract_cmd = "/mount/src/cgpa-calculator/tess/tesseract.exe"
+tess_exe_path = os.path.join(os.getcwd(), 'tess', 'tesseract.exe')
+tess.pytesseract.tesseract_cmd = tess_exe_path
 
 def img(uploaded_file):
 
