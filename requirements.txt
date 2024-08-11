@@ -1,5 +1,5 @@
 setuptools
-numpy==1.23.5
+numpy
 opencv-contrib-python==4.8.1.78
 opencv-python-headless==4.9.0.80
 Pillow==10.4.0
