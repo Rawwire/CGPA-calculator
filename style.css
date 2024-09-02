@@ -8,6 +8,9 @@
     resize: vertical;
     color: white;
 }
+#name,#email , textarea:focus{
+    color:black;
+}
 #btn
    {
     background-color: #04AA6D;
