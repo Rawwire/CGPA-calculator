@@ -6,10 +6,6 @@
     box-sizing: border-box; 
     margin-top: 6px;  margin-bottom: 16px;
     resize: vertical;
-    color: white;
-}
-#name,#email , textarea:focus{
-    color:black;
 }
 #btn
    {
