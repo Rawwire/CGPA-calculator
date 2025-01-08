@@ -105,9 +105,10 @@ if selectedmain == "Home":
         del st.session_state.grades[index]
         del st.session_state.credits[index]
     if selected == "Upload Marksheet":
-        st.header("Read This before usage!!")
-        st.write("⚠️ If you want to calculate multiple marksheets, kindly refresh the page every time!!")
-        st.write("Make sure that your image is in good quality")
+        st.subheader("Read This before usage!!")
+        st.write("- If you want to calculate multiple marksheets, kindly refresh the page every time!!")
+        st.write("- Make sure that your image is in good quality")
+        st.write("For better results, crop the marks table with atmost quality and resolution")
         uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
         
         if uploaded_file is not None:
