@@ -104,11 +104,13 @@ if selectedmain == "Home":
     def remove_subject(index):
         del st.session_state.grades[index]
         del st.session_state.credits[index]
+
     if selected == "Upload Marksheet":
-        st.subheader("Read this before use")
-        st.write("- If you want to calculate multiple marksheets, kindly refresh the page every time!!")
-        st.write("- Make sure that your image is in good quality")
-        st.write("- For better results, crop the marks table with atmost quality and resolution")
+        st.markdown("<u><h3>Important Information Before You Begin</h3></u>", unsafe_allow_html=True)  
+        st.write("- If you wish to calculate multiple marksheets, please refresh the page before each new upload.")  
+        st.write("- Ensure that your image is of high quality for accurate processing.")  
+        st.write("- For optimal results, crop the marks table carefully to maintain maximum clarity and resolution.")  
+
         uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
         
         if uploaded_file is not None:
