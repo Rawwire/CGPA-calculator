@@ -105,7 +105,7 @@ if selectedmain == "Home":
         del st.session_state.grades[index]
         del st.session_state.credits[index]
     if selected == "Upload Marksheet":
-        st.subheader("Read This before usage!!")
+        st.subheader("Read this before use")
         st.write("- If you want to calculate multiple marksheets, kindly refresh the page every time!!")
         st.write("- Make sure that your image is in good quality")
         st.write("- For better results, crop the marks table with atmost quality and resolution")
