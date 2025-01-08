@@ -107,6 +107,7 @@ if selectedmain == "Home":
     if selected == "Upload Marksheet":
 
         st.write("⚠️ If you want to calculate multiple marksheets, kindly refresh the page every time!!")
+        st.write("Make sure that your image is in good quality")
         uploaded_file = st.file_uploader("Choose an image file", type=["jpg", "jpeg", "png"])
         
         if uploaded_file is not None:
