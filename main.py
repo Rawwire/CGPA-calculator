@@ -118,7 +118,13 @@ if selectedmain == "Home":
             st.image(image, caption=uploaded_file.name, use_column_width=True)
             
             try:
-                result = img(uploaded_file)  
+                result = img(uploaded_file) 
+
+                if len(result[0]) != len(result[1]):
+                    if len(result[0])>len(result[1]):
+                        result[0]=result[0][0:len(result[1])]
+                    else:
+                        result[1] = result[1][0:len(result[0])]
 
                 if not st.session_state.grades and not st.session_state.credits:
                     for k in result[1]:
