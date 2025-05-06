@@ -61,10 +61,10 @@ if selectedmain == "Home":
         gpa = 0
         for i in range(1, n + 1):
             with st.expander(f"Subject {i}"):
-                a = st.selectbox(f"Choose Credits for Subject {i}", options=["4", "3", "2", "1"], key=f"credits_{i}")
-                b = st.selectbox(f"Choose Grade for Subject {i}", options=["O", "A+", "A", "B+", "B", "C"], key=f"grade_{i}")
+                a = st.selectbox(f"Choose Credits for Subject {i}", options=['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'], key=f"credits_{i}")
+                b = st.selectbox(f"Choose Grade for Subject {i}", options=["O", "A+", "A", "B+", "B", "C", "RA"], key=f"grade_{i}")
                 credit.append(int(a))
-                grade.append({"O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5}.get(b))
+                grade.append({"O": 10, "A+": 9, "A": 8, "B+": 7, "B": 6, "C": 5, "RA":0}.get(b))
 
         if st.button("Calculate"):
             for j in range(n):
