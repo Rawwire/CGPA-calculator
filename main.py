@@ -119,7 +119,7 @@ if selectedmain == "Home":
             
             try:
                 result = img(uploaded_file) 
-
+                result = list(result)
                 if len(result[0]) != len(result[1]):
                     if len(result[0])>len(result[1]):
                         result[0]=result[0][0:len(result[1])]
